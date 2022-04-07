@@ -133,17 +133,18 @@ const basket = [
 const basketIndex = [good[3], good[2]]
 
 
-// добавление товара в корзину
-addInBasket(3, 2);
-console. log(basket);
-
-// удаление товара из корзины
-dropFromBasket(2, 1);
-console. log(basket);
-
 // очистка корины
 dropAllBasket();
-console. log(basket);
+
+// добавление товара в корзину
+addInBasket(3, 2);
+addInBasket(4, 1);
+addInBasket(1, 1);
+addInBasket(2, 1);
+
+// удаление товара из корзины
+dropFromBasket(2, 2);
+dropFromBasket(3, 1);
 
 //  всех товаров в корзине
 console. log(costBasket());
