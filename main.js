@@ -146,5 +146,5 @@ addInBasket(2, 1);
 dropFromBasket(2, 2);
 dropFromBasket(3, 1);
 
-//  всех товаров в корзине
+// стоимость всех товаров в корзине
 console. log(costBasket());
