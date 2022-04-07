@@ -1,6 +1,6 @@
 function getIdInBasket(product) {
     for (i=0; i<basket.length; i++) {
-        if (basket[i].good == product) {
+        if (basket[i].good === product) {
             return i;
         }
     }
@@ -10,26 +10,70 @@ function getIdInBasket(product) {
 function addInBasket(good_id, amount) {
     let product = good[good_id];
     
-    if (basketIndex.includes(product)) {
-        let idInBasket = getIdInBasket(product);
-        basket[idInBasket].amount = basket[idInBasket].amount + amount;
+    if (product.available) {
+        
+        if (basketIndex.includes(product)) {
+            let idInBasket = getIdInBasket(product);
+            basket[idInBasket].amount = basket[idInBasket].amount + amount;
+        }
+        
+        else {
+            basketIndex.push(product);
+            basket.push(
+                {
+                    good: product,
+                    amount: amount,
+                },
+            );
+        }
+
+        console. log('Товар добавлен в корзину.');
     }
-    
+
     else {
-        basketIndex.push(product);
-        basket.push(
-            {
-                good: product,
-                amount: amount,
-            },
-        );
+        console. log('Товар недоступен для продажи.');
     }
-
-
-    // let product = {good: good[good_id], amount: amount};
-    // basket.push(product);
 }
 
+
+function dropFromBasket(good_id, amount) {
+    let product = good[good_id];  
+    let idInBasket = getIdInBasket(product);
+    
+    if (basketIndex.includes(product)) {
+
+        if (amount < basket[idInBasket].amount) {
+            basket[idInBasket].amount = basket[idInBasket].amount - amount;
+            console. log('Товар удален из корзины.');
+        }
+    
+        else {
+            basket.splice(idInBasket, 1);
+            for (i=0; i<basketIndex.length; i++) {
+                if (basketIndex[i] === product) {
+                    basketIndex.splice(i, 1);
+                }
+            }
+
+            console. log('Товар удален из корзины.');
+        }
+    }
+}
+
+
+function dropAllBasket() {
+    basket.splice(0, basket.length);
+    basketIndex.splice(0, basketIndex.length);
+    console. log('Корзина очищена.');
+}
+
+function costBasket() {
+    cost = 0
+    for (i=0; i<basket.length; i++) {
+        cost += basket[i].good.price * basket[i].amount
+    }
+    return cost
+}
 
 const good = {
     1: {
@@ -38,7 +82,7 @@ const good = {
         description: 'Сонце, пляж, отпуск.',
         sizes: ['M', 'L', 'XL', 'XXL'],
         price: '800',
-        available: 412,
+        available: true,
     },
     2: {
         id: '2',
@@ -46,7 +90,7 @@ const good = {
         description: 'В клетку синяя рубашка',
         sizes: ['S', 'M', 'L', 'XL'],
         price: '900',
-        available: 333,
+        available: true,
     },
     3: {
         id: '3',
@@ -54,7 +98,7 @@ const good = {
         description: 'Легкие и быстрые, +2 к скорости',
         sizes: ['40', '41', '42', '44', '46'],
         price: '3200',
-        available: 21,
+        available: true,
     },
     
     4: {
@@ -63,7 +107,7 @@ const good = {
         description: 'Сразу избой да печью повеяло',
         sizes: ['41', '42', '44', '46', '48'],
         price: '2000',
-        available: 0,
+        available: false,
     },
     5: {
         id: '5',
@@ -71,7 +115,7 @@ const good = {
         description: 'Врум-врум',
         sizes: ['S', 'M', 'L', 'XL'],
         price: '1100',
-        available: 666,
+        available: true,
     },
 };
 
@@ -89,5 +133,17 @@ const basket = [
 const basketIndex = [good[3], good[2]]
 
 
+// добавление товара в корзину
 addInBasket(3, 2);
 console. log(basket);
+
+// удаление товара из корзины
+dropFromBasket(2, 1);
+console. log(basket);
+
+// очистка корины
+dropAllBasket();
+console. log(basket);
+
+//  всех товаров в корзине
+console. log(costBasket());
